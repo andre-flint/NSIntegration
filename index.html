@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sales Order Lookup</title>
+  <style>
+    body { font-family: sans-serif; margin: 20px; }
+    input[type="text"] { width: 300px; padding: 8px; }
+    button { padding: 8px 12px; }
+    pre { background: #f4f4f4; padding: 10px; border-radius: 5px; }
+  </style>
+</head>
+<body>
+  <h1>Sales Order Lookup</h1>
+  <p>Enter a Sales Order ID or leave blank to view latest 5:</p>
+
+  <input type="text" id="orderId" placeholder="e.g., 836515">
+  <button onclick="lookupOrder()">Lookup</button>
+
+  <div id="result"></div>
+
+  <script>
+    function lookupOrder() {
+      const orderId = document.getElementById('orderId').value;
+      const resultDiv = document.getElementById('result');
+      resultDiv.innerHTML = "Loading...";
+
+      fetch('lookup.php', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+        body: 'orderId=' + encodeURIComponent(orderId)
+      })
+      .then(res => res.text())
+      .then(html => resultDiv.innerHTML = html)
+      .catch(err => resultDiv.innerHTML = 'Error: ' + err);
+    }
+  </script>
+</body>
+</html>
